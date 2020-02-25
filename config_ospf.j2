@@ -1,0 +1,25 @@
+{# Documentation:
+    Required inputs:
+      process_id: Router OSPF process ID
+      rid: Router_id
+      area_id: Area ID to configure
+      loopback_if: Passive Loopback
+      interface_name: Interface to configure
+      bfd_min: BFD minimal interval
+      bfd_multi: BFD multiplier value
+
+#}
+router ospf {{ process_id }}
+	router-id {{ rid }}
+	area {{ area_id }}
+		bfd minimum-interval {{ bfd_min }}
+		bfd fast-detect
+		bfd multiplier {{ bfd_multi }}
+		network point-to-point
+		interface {{ loopback_if }}
+		 passive enable
+		!
+		interface {{ interface_name }}
+		!
+	!
+!

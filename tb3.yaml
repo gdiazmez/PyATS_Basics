@@ -1,0 +1,45 @@
+devices:
+ DCL-NA-AR1: # Importante: Tiene que ser el Hostname!!!
+  type: IOS XRv 9000
+  os: iosxr
+  platform: iosxrv9k
+  alias: uut
+  credentials:
+   default:
+    username: cnc
+    password: 8AMXcl15
+  connections:
+   cli:
+    protocol: ssh
+    ip: 200.27.254.47
+    proxy: 
+     - device: jump_host_1
+       command: ssh gdiazmez@200.27.15.132
+     - device: jump_host_2
+
+ jump_host_1:
+  connections:
+   cli:
+    ip: 64.100.29.32
+    port: 22
+    protocol: ssh
+  credentials:
+   default:
+    password: F_jul2019
+    username: gdiazmez
+  os: linux
+  type: linux
+
+ jump_host_2:
+  connections:
+   cli:
+    ip: 200.27.15.132
+    port: 22
+    protocol: ssh
+    proxy: jump_host_1
+  credentials:
+   default:
+    password: F_nov2017
+    username: gdiazmez
+  os: linux
+  type: linux

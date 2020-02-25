@@ -1,0 +1,28 @@
+devices:
+ XR9000v: # Importante: Tiene que ser el Hostname!!!
+  type: IOS XRv 9000
+  os: iosxr
+  platform: iosxrv9k
+  alias: XR9000v
+  credentials:
+   default:
+    username: gdiaz
+    password: Gonzal0D
+  connections:
+   cli:
+    protocol: telnet
+    ip: 172.16.100.171
+    proxy: jump_host
+    
+ jump_host:
+  connections:
+   cli:
+    ip: 190.151.29.125
+    port: 8022
+    protocol: ssh
+  credentials:
+   default:
+    password: Gonzal0D
+    username: gdiaz
+  os: linux
+  type: linux

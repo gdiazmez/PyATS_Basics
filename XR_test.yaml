@@ -1,0 +1,27 @@
+devices:
+ ASR9906: # Importante: Tiene que ser el Hostname!!!
+  type: IOS XR
+  os: iosxr
+  platform: asr9k
+  credentials:
+   default:
+    username: cisco
+    password: cisco123
+  connections:
+   cli:
+    protocol: telnet
+    ip: 172.16.10.51
+    proxy: jump_host
+
+ jump_host:
+  connections:
+   cli:
+    ip: 172.16.10.13
+    port: 22
+    protocol: ssh
+  credentials:
+   default:
+    password: Telmex123
+    username: laboratorio
+  os: linux
+  type: linux

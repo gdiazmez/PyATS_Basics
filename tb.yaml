@@ -1,0 +1,14 @@
+devices:
+ XR:
+  type: 'router'
+  os: 'iosxr'
+  platform: asr9k
+  alias: 'XR9000v'
+  credentials:
+   default:
+    username: gdiaz
+    password: 'Gonzal0D'
+  connections:
+   cli:
+    protocol: telnet
+    ip: "172.16.100.171"
