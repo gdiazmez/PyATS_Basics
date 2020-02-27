@@ -1,6 +1,0 @@
-TriggerSimple:
-  devices:
-    - ASR9906
-  source:
-    class: test_job.TriggerSimple
-    pkg: test

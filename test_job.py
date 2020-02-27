@@ -1,32 +1,19 @@
-''' Description of file '''
-
-# Python
-import logging
 import os
+from pyats.easypy import run
 
-# pyATS
-from pyats import aetest
+# To run the job:
+# pyats run job $VIRTUAL_ENV/examples/connection/job/connection_example_job.py \
+#               --testbed-file <your tb file>
+#
+# Description: This example uses a sample testbed, connects to a device
+#              which name is passed from the job file,
+#              and executes some commands.
 
-# Genie
-from genie.harness.base import Trigger
-# from genie.utils.timeout import Timeout
-
-# Unicon
-from unicon.core.errors import SubCommandFailure
-
-log = logging.getLogger(__name__)
-
+# All run() must be inside a main function
 def main():
     # Find the location of the script in relation to the job file
     test_path = os.path.dirname(os.path.abspath(__file__))
+    testscript = os.path.join(test_path, 'test_script.py')
 
-
-
-class TriggerSimple(Trigger):
-    ''' Trigger Simple for Training '''
-
-    @aetest.setup
-    def check_interface(self, uut, steps):
-        output = uut.parse('show interfaces')
-        if output:
-            self.passed('interface found')
+    # Execute the testscript
+    run(testscript=testscript)
