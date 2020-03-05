@@ -1,0 +1,13 @@
+devices:
+ NCS221: # Importante: Tiene que ser el Hostname!!!
+  type: IOS XE
+  os: iosxe
+  platform: ncs221
+  credentials:
+   default:
+    username: CISCO15
+    password: otbu+1
+  connections:
+   cli:
+    protocol: telnet
+    ip: 10.89.200.221
