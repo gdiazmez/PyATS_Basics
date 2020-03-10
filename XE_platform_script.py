@@ -65,7 +65,8 @@ class test_platform(aetest.Testcase):
         for device in testbed:
             if device.connected:
                 output = device.parse('show platform')
-                print ('hola')
+                for x in output['slot'].keys():
+                    print ('slot is %s' % x)
                 self.platform_info = device.parse('show version')
 
             else:
