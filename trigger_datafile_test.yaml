@@ -16,5 +16,4 @@ Testcase1_environment_variables:
         - trigger
     source:
         class: env.TriggerEnv
-        pkg: spitfire_pyats
-    variable: 1
+    variable: 10
