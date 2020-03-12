@@ -1,0 +1,20 @@
+
+Testcase1_environment_variables:
+    message:
+        |
+        Environmental variables collection
+            1. Collect show environment output
+            2. Collect show environment all output
+            3. Collect show environment power output
+            4. Collect show environment fan output
+            5. Collect show environment temperature output
+    devices:
+        - ASR9906
+        - ASR9910
+    groups:
+        - env
+        - trigger
+    source:
+        class: env.TriggerEnv
+        pkg: spitfire_pyats
+    variable: 1
