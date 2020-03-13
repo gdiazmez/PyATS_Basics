@@ -12,6 +12,9 @@ devices:
     protocol: telnet
     ip: 172.16.10.51
     proxy: jump_host
+    settings:
+     ESCAPE_CHAR_CHATTY_TERM_WAIT: 2
+     ESCAPE_CHAR_PROMPT_WAIT: 2
 
  ASR9910: # Importante: Tiene que ser el Hostname!!!
   type: IOS XR
@@ -27,6 +30,9 @@ devices:
     protocol: telnet
     ip: 172.16.10.53
     proxy: jump_host
+    settings:
+      ESCAPE_CHAR_CHATTY_TERM_WAIT: 2
+      ESCAPE_CHAR_PROMPT_WAIT: 2
 
  jump_host:
   connections:
