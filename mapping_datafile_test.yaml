@@ -1,10 +1,6 @@
 devices:
-  ASR9910:
-    context: cli
-    mapping:
-      cli: cli
-
   ASR9906:
     context: cli
     mapping:
       cli: cli
+

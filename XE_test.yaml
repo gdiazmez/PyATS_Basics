@@ -2,6 +2,7 @@ devices:
  NCS221: # Importante: Tiene que ser el Hostname!!!
   type: IOS XE
   os: iosxe
+  alias: uut
   platform: ncs221
   credentials:
    default:
