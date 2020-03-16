@@ -14,8 +14,14 @@ setup:
       initialize_traffic:
         method: genie.harness.commons.initialize_traffic
 
-    order: ['connect','configuration_snapshot']
+    order: ['connect', 'configuration_snapshot', 'learn_system_defaults']
 
+    processors:
+      post:
+        genie_telemetry:
+          method: genie.telemetry.processors.genie_telemetry_processor
+
+    telemetry_plugins: ['tracebackcheck','crashdumps']
 
 cleanup:
 
@@ -24,5 +30,12 @@ cleanup:
         method: genie.harness.commons.check_post_config
       stop_traffic:
         method: genie.harness.commons.stop_traffic
-
+  
     order: ['verify_configuration_snapshot']
+
+    processors:
+      post:
+        genie_telemetry:
+          method: genie.telemetry.processors.genie_telemetry_processor
+
+    telemetry_plugins: ['tracebackcheck','crashdumps']
