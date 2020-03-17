@@ -15,4 +15,3 @@ Testcase1_environment_variables:
         - trigger
     source:
         class: env.TriggerEnv
-    variable: 10

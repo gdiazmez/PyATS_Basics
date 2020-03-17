@@ -3,9 +3,3 @@ devices:
     context: cli
     mapping:
       cli: cli
-
-  lnx:
-    context: cli
-    mapping:
-      cli: linux
-      
