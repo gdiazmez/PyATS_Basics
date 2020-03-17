@@ -9,8 +9,7 @@ Testcase1_environment_variables:
             4. Collect show environment fan output
             5. Collect show environment temperature output
     devices:
-        - ASR9906
-        - ASR9910
+        - uut
     groups:
         - env
         - trigger
