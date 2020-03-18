@@ -6,7 +6,7 @@ dev = tb.devices['ASR9906']
 dev.connect()
 
 env = jinja2.Environment(loader=jinja2.FileSystemLoader(searchpath='.'))
-template = env.get_template('config_ospf.j2')
+template = env.get_template('../config_files/config_ospf.j2')
 
 configuration = template.render(process_id='1',
 						rid='1.1.1.1',
