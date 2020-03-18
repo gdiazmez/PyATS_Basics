@@ -1,6 +1,6 @@
 import jinja2
 from genie.testbed import load
-tb = load('XR_test.yaml')
+tb = load('../Testbed/XR_test.yaml')
 
 dev = tb.devices['ASR9906']
 dev.connect()
