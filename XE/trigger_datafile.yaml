@@ -1,0 +1,26 @@
+
+Testcase1_Power_Supply_verification:
+    message:
+        |
+        Environment variables collection
+            1. Collect and parse show environment
+    devices:
+        - uut
+    groups:
+        - pwr_supply
+        - trigger
+    source:
+        class: pwr_supply.TriggerPwrSupply
+
+Testcase2_Platform_verification:
+    message:
+        |
+        Platfotm variables collection
+            1. Collect and parse show platform
+    devices:
+        - uut
+    groups:
+        - platf
+        - trigger
+    source:
+        class: platf.TriggerPlatf

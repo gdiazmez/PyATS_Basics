@@ -15,3 +15,22 @@ Testcase1_environment_variables:
         - trigger
     source:
         class: env.TriggerEnv
+
+Testcase2_scp_capability:
+    message:
+        |
+        SCP Validation
+            1. Copy SCP from Test Server to Device
+            2. Copy SCP from Device to Test Server
+    devices:
+        - uut
+    groups:
+        - scp
+        - trigger
+    source:
+        class: scp.TriggerScp
+    remote_test_file_download: '/test/test.txt'
+    remote_test_file_upload: '/test/test.txt'
+    vrf: 'management'
+    local_test_file: 'disk0:/test.txt'
+    scp_server: '172.16.11.32'

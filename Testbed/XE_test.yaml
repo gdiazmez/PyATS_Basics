@@ -12,3 +12,6 @@ devices:
    cli:
     protocol: telnet
     ip: 10.89.200.221
+    settings:
+      ESCAPE_CHAR_CHATTY_TERM_WAIT: 2
+      ESCAPE_CHAR_PROMPT_WAIT: 2
