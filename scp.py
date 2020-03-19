@@ -5,6 +5,7 @@ from pyats import aetest
 from genie.harness.base import Trigger
 import re
 import pprint
+from unicon.eal.dialogs import Dialog, Statement
 
 log = logging.getLogger(__name__)
 
@@ -27,7 +28,6 @@ class TriggerScp(Trigger):
 
         with steps.start("Copy from SCP server to Disk0:", continue_=True) as step:
 
-            print('path to download is ',remote_test_file_download)
             try:
                 uut.api.copy_to_device(remote_path=remote_test_file_download,
                                             local_path=local_test_file,
@@ -35,12 +35,26 @@ class TriggerScp(Trigger):
                                             protocol='scp',
                                             quiet=False,
                                             vrf=vrf)
+
             except Exception as e:
                 step.failed
 
+            pass_dialog = Dialog(
+            [
+            Statement(
+            pattern=r"Connecting*"
+                    r"Pasword:*",
+            action="sendline()",
+            loop_continue=True,
+            continue_timer=False,
+            )
+            ]
+            )
+
+            #uut.execute('scp gdiazmez@172.16.11.32:test/test.txt disk0:/test.txt vrf management', reply=pass_dialog)
+
         with steps.start("Copy test file to SCP Server", continue_=True) as step:
 
-            print('path to upload is ',remote_test_file_upload)
             try:
                 uut.api.copy_from_device(remote_path=remote_test_file_upload,
                                             local_path=local_test_file,
