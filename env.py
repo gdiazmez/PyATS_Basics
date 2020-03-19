@@ -1,10 +1,9 @@
-"""Implementation NTP triggers"""
+"""Implementation Environment triggers"""
 
 import logging
 from pyats import aetest
 from genie.harness.base import Trigger
 import re
-import pprint
 
 log = logging.getLogger(__name__)
 
@@ -12,58 +11,84 @@ log = logging.getLogger(__name__)
 class TriggerEnv(Trigger):
 
     @aetest.test
-    def collect_environment_variables(self, uut, steps, message, testbed):
+    def collect_environment_variables(self, uut, steps, message):
         log.info("Test case steps:\n{msg}".format(msg=message))
 
-        output = uut.execute('show inventory all')
+        try:
+            output = uut.execute('show inventory all')
+        except SubCommandFailure as e:
+            self.failed(goto=['next_tc'])
+
         output_parsed_inventory = inventory_parser(output)
-        #log.info("Gathering parsed inventory")
-        #pprint.pprint(output_parsed_inventory)
 
-        with steps.start("Collect show environment", continue_=True) as step:
-            output1 = uut.execute('show environment')
+        with steps.start('Collect show environment',continue_=True) as step:
+            try:
+                output1 = uut.execute('show environment')
+            except SubCommandFailure as e:
+                step.failed(str(e))
 
-        with steps.start("Collect show environment all", continue_=True) as step:
-            output2 = uut.execute('show environment all')
+        with steps.start('Collect show environment all',continue_=True) as step:
+            try:
+                output2 = uut.execute('show environment all')
+            except SubCommandFailure as e:
+                step.failed(str(e))
 
-        with steps.start("Collect show environment power", continue_=True) as step:
-            output3 = uut.execute('show environment power')
+        with steps.start('Collect show environment power',continue_=True) as step:
+            try:
+                output3 = uut.execute('show environment power')
+            except SubCommandFailure as e:
+                step.failed(str(e))
             output3 = output3.splitlines()
-            for k in output_parsed_inventory['module_name'].keys():
-                m = re.search(r'PM',k)
-                if m:
-                    print ('location in inv for power-module is' , k)
+            for module in output_parsed_inventory['module_name'].keys():
+                if re.search(r'PM', module):
+                    log.info('Location in inventory for power-module is {module}'.format(module=module))
+                    check_module = None
                     for line in output3:
-                        line = line.strip()
-                        m2 = re.search(k,line)
-                        if m2:
-                            #print('there are power environment values for power-module at ', loc)
-                            log.info("There are power environment values for power-module at {msg}".format(msg=k))
+                        if re.search(module, line.strip()):
+                            log.info("There are power environment values for power-module at {mod}".format(mod=module))
+                            check_module = True
+                    if (not check_module):
+                        step.failed('Environment values not found for fan-tray at: {module}'.format(module=module))
 
-        with steps.start("Collect show environment fan", continue_=True) as step:
-            output4 = uut.execute('show environment fan')
+        with steps.start('Collect show environment fan',continue_=True) as step:
+            try:
+                output4 = uut.execute('show environment fan')
+            except SubCommandFailure as e:
+                step.failed(str(e))
             output4 = output4.splitlines()
-            for k in output_parsed_inventory['module_name'].keys():
-                m = re.search(r'FT',k)
-                if m:
-                    print ('location in inv for fan-tray is' , k)
+            for module in output_parsed_inventory['module_name'].keys():
+                if re.search(r'FT',module):
+                    log.info('Location in inventory for fan-tray is {module}'.format(module=module))
+                    check_module = None
                     for line in output4:
-                        line = line.strip()
-                        m2 = re.search(k,line)
-                        if m2:
-                            #print('there are fan environment values for fantray at ', loc)
-                            log.info("There are fan environment values for fantray at {msg}".format(msg=k))
+                        if re.search(module, line.strip()):
+                            log.info("There are fan environment values for fan-tray at {mod}".format(mod=module))
+                            check_module = True
+                    if (not check_module):
+                        step.failed('Environment values not found for fan-tray at: {module}'.format(module=module))
 
-
-        with steps.start("Collect show environment temperature", continue_=True) as step:
-            output5 = uut.execute('show environment temperature')
+        with steps.start('Collect show environment temperature',continue_=True) as step:
+            try:
+                output5 = uut.execute('show environment temperature')
+            except SubCommandFailure as e:
+                step.failed(str(e))
+            output5 = output5.splitlines()
+            for module in output_parsed_inventory['module_name'].keys():
+                if re.search(r'^0/',module):
+                    log.info('Check Location in inventory at {module}'.format(module=module))
+                    check_module = None
+                    for line in output5:
+                        if re.search(module, line.strip()):
+                            log.info("There are temperature values for module at {mod}".format(mod=module))
+                            check_module = True
+                    if (not check_module):
+                        step.failed('Temperature values not found for module at: {module}'.format(module=module))
 
         if not steps.result:
             self.failed(goto=['next_tc'])
 
-def inventory_parser(output):
-    out = output
 
+def inventory_parser(output):
     # Init vars
     inventory_dict = {}
 
@@ -82,7 +107,7 @@ def inventory_parser(output):
                     r' +VID: *(?P<vid>[\S\s]*),'
                     r' SN: *(?P<sn>[\S\s]*)$')
 
-    for line in out.splitlines():
+    for line in output.splitlines():
         line = line.strip()
         if not line:
             continue

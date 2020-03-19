@@ -1,4 +1,4 @@
-"""Implementation NTP triggers"""
+"""Implementation SCP triggers"""
 
 import logging
 from pyats import aetest
@@ -12,16 +12,16 @@ log = logging.getLogger(__name__)
 class TriggerScp(Trigger):
 
     @aetest.test
-    def collect_environment_variables(self,
-                                        uut,
-                                        steps,
-                                        message,
-                                        testbed,
-                                        remote_test_file_download,
-                                        remote_test_file_upload,
-                                        vrf,
-                                        local_test_file,
-                                        scp_server):
+    def scp_testing(self,
+                    uut,
+                    steps,
+                    message,
+                    testbed,
+                    remote_test_file_download,
+                    remote_test_file_upload,
+                    vrf,
+                    local_test_file,
+                    scp_server):
 
         log.info("Test case steps:\n{msg}".format(msg=message))
 
