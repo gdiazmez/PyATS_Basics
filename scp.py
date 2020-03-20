@@ -18,52 +18,64 @@ class TriggerScp(Trigger):
                     steps,
                     message,
                     testbed,
-                    remote_test_file_download,
-                    remote_test_file_upload,
+                    remote_file,
+                    local_file,
                     vrf,
-                    local_test_file,
-                    scp_server):
+                    scp_server,
+                    scp_username,
+                    scp_password):
 
         log.info("Test case steps:\n{msg}".format(msg=message))
 
+        scp_dialog = Dialog(
+            [
+                Statement(
+                    pattern=r"Connecting.*"
+                    r"Password:.*",
+                    action=lambda spawn, password: spawn.sendline(password),
+                    args={'password': scp_password},
+                    loop_continue=True,
+                    continue_timer=False,
+                )
+            ]
+        )
+
         with steps.start("Copy from SCP server to Disk0:", continue_=True) as step:
 
-            try:
-                uut.api.copy_to_device(remote_path=remote_test_file_download,
-                                            local_path=local_test_file,
-                                            server=scp_server,
-                                            protocol='scp',
-                                            quiet=False,
-                                            vrf=vrf)
-
-            except Exception as e:
-                step.failed
-
-            pass_dialog = Dialog(
-            [
-            Statement(
-            pattern=r"Connecting*"
-                    r"Pasword:*",
-            action="sendline()",
-            loop_continue=True,
-            continue_timer=False,
-            )
-            ]
-            )
-
-            #uut.execute('scp gdiazmez@172.16.11.32:test/test.txt disk0:/test.txt vrf management', reply=pass_dialog)
+            output = uut.execute('scp {user}@{ip}:{remote_file} {local_file} vrf {vrf}'.format(user=scp_username,
+                                                                                                ip=scp_server,
+                                                                                                remote_file=remote_file,
+                                                                                                local_file=local_file,
+                                                                                                vrf=vrf),
+                                    reply=scp_dialog)
+            find = None
+            print (output)
+            if re.search(r'Transferred', output):
+                log.info("Test file transferred from {user}@{ip}:{remote_file} to {local_file}".format(local_file=local_file,
+                                                                                                        user=scp_username,
+                                                                                                        ip=scp_server,
+                                                                                                        remote_file=remote_file))
+            else:
+                step.failed('Test file was not transferred into device')
 
         with steps.start("Copy test file to SCP Server", continue_=True) as step:
 
-            try:
-                uut.api.copy_from_device(remote_path=remote_test_file_upload,
-                                            local_path=local_test_file,
-                                            server=scp_server,
-                                            protocol='scp',
-                                            quiet=False,
-                                            vrf=vrf)
-            except Exception as e:
-                step.failed
+            output = uut.execute('scp {local_file} {user}@{ip}:{remote_file} vrf {vrf}'.format(user=scp_username,
+                                                                                                ip=scp_server,
+                                                                                                remote_file=remote_file,
+                                                                                                local_file=local_file,
+                                                                                                vrf=vrf),
+                                    reply=scp_dialog)
+            find = None
+            print (output)
+            if re.search(r'Transferred', output):
+                log.info("Test file transferred from {local_file} to {user}@{ip}:{remote_file}".format(local_file=local_file,
+                                                                                                        user=scp_username,
+                                                                                                        ip=scp_server,
+                                                                                                        remote_file=remote_file))
+            else:
+                step.failed('Test file was not transferred from device')
+
 
         if not steps.result:
             self.failed(goto=['next_tc'])
