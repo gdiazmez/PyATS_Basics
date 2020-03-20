@@ -48,8 +48,7 @@ class TriggerScp(Trigger):
                                                                                                 local_file=local_file,
                                                                                                 vrf=vrf),
                                     reply=scp_dialog)
-            find = None
-            print (output)
+
             if re.search(r'Transferred', output):
                 log.info("Test file transferred from {user}@{ip}:{remote_file} to {local_file}".format(local_file=local_file,
                                                                                                         user=scp_username,
@@ -66,8 +65,7 @@ class TriggerScp(Trigger):
                                                                                                 local_file=local_file,
                                                                                                 vrf=vrf),
                                     reply=scp_dialog)
-            find = None
-            print (output)
+
             if re.search(r'Transferred', output):
                 log.info("Test file transferred from {local_file} to {user}@{ip}:{remote_file}".format(local_file=local_file,
                                                                                                         user=scp_username,
