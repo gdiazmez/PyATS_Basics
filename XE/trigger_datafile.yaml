@@ -12,7 +12,20 @@ Testcase1_Power_Supply_verification:
     source:
         class: pwr_supply.TriggerPwrSupply
 
-Testcase2_Platform_verification:
+Testcase2_Fan_verification:
+    message:
+        |
+        Platform environment collection
+            1. Collect environment for FAN
+    devices:
+        - uut
+    groups:
+        - fan
+        - trigger
+    source:
+        class: fan.TriggerFan
+
+Testcase3_Platform_verification:
     message:
         |
         Platfotm variables collection
