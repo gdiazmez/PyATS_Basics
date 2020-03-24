@@ -20,6 +20,7 @@ devices:
  ASR9910: # Importante: Tiene que ser el Hostname!!!
   type: IOS XR
   os: iosxr
+  alias: uut2
   platform: asr9k
   credentials:
    default:

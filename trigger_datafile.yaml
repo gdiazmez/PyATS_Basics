@@ -35,3 +35,32 @@ Testcase2_scp_capability:
     scp_username: 'gdiazmez'
     scp_password: 'cisco123'
     vrf: 'management'
+
+Testcase3_lacp_test:
+    message:
+        |
+        LACP Negotiation
+            1. Remove system-id configuration
+            2. Remove port-priority setup
+            3. Determine primary link
+            4. Misconfigure Bundle ID on peers and recommend fix
+            5. Verify LACP Negotiation
+            6. Change system-id and port-priority
+            7. Verify LACP Negotiation
+            8. Remove Bundle ID misconfiguration
+
+    devices:
+        - uut
+    groups:
+        - lacp
+        - trigger
+    source:
+        class: lacp.TriggerLacp
+    interface_BE_uut1: Bundle-Eth1
+    interfaces_uut1:
+      - Te0/0/0/2
+      - Te0/0/0/3
+    interface_BE_uut2: Bundle-Eth1
+    interfaces_uut2:
+      - Te0/2/0/4
+      - Te0/2/0/5
