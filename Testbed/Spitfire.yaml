@@ -22,7 +22,7 @@ devices:
     type: iosxr
     series: spitfire
     os: iosxr
-    alias: cr02
+    alias: uut2
     platform: iosxr
     credentials:
       default:

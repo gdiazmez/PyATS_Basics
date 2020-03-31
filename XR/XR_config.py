@@ -13,6 +13,8 @@ configuration = template.render(process_id='1',
 									area_id='0',
 									loopback_if='loopback0',
 									interface_name='TenGigE0/0/0/0',
+									interface_name_2='Te0/1/0/0',
+									interface_name_3='Bundle-Eth13',
 									bfd_min='250',
 									bfd_multi='4')
 

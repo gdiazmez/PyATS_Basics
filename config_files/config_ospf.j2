@@ -5,6 +5,8 @@
       area_id: Area ID to configure
       loopback_if: Passive Loopback
       interface_name: Interface to configure
+      interface_name_2: Interface to configure
+      interface_name_3: Interface to configure
       bfd_min: BFD minimal interval
       bfd_multi: BFD multiplier value
 
@@ -21,5 +23,9 @@ router ospf {{ process_id }}
 		!
 		interface {{ interface_name }}
 		!
+    interface {{ interface_name_2 }}
+    !
+    interface {{ interface_name_3 }}
+    !
 	!
 !

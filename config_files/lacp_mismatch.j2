@@ -1,0 +1,14 @@
+{# Documentation:
+    Required inputs:
+      bundle_id: Interface Bundle Ether ID
+      interface_name_1: Interface 1 to configure
+      commit_label: Label used for this commit
+#}
+!
+interface Bundle-Eth {{ bundle_id }}
+!
+interface {{ interface_name_1 }}
+ bundle id {{ bundle_id }} mode active
+!
+commit label {{ commit_label }}
+!

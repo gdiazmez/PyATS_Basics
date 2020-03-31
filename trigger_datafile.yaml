@@ -56,11 +56,16 @@ Testcase3_lacp_test:
         - trigger
     source:
         class: lacp.TriggerLacp
-    interface_BE_uut1: Bundle-Eth1
-    interfaces_uut1:
+    BE_ID_uut: 1
+    interfaces_uut:
       - Te0/0/0/2
       - Te0/0/0/3
-    interface_BE_uut2: Bundle-Eth1
+    BE_ID_uut2: 1
+    BE_wrong_ID_uut2: 10
     interfaces_uut2:
       - Te0/2/0/4
       - Te0/2/0/5
+    templates_dir: 'config_files'
+    template_config: 'lacp_initial.j2'
+    remove_sysid: 'unconfig_lacp_sysid.j2'
+    mismatch_cfg: 'lacp_mismatch.j2'
