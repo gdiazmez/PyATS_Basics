@@ -1,0 +1,15 @@
+{# Documentation:
+    Required inputs:
+      system_priority = New System Priority
+      interface_name_1: Interface 1 to configure
+      interface_priority: LACP Port Priority
+      commit_label: Label used for this commit
+#}
+!
+lacp system priority {{ system_priority }}
+!
+interface {{ interface_name_1 }}
+ bundle port-priority {{ interface_priority }}
+!
+commit label {{ commit_label }}
+!

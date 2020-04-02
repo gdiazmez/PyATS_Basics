@@ -69,3 +69,7 @@ Testcase3_lacp_test:
     template_config: 'lacp_initial.j2'
     remove_sysid: 'unconfig_lacp_sysid.j2'
     mismatch_cfg: 'lacp_mismatch.j2'
+    sys_pri_cfg: 'lacp_sys_pri.j2'
+    new_sys_pri: 4096
+    new_intf_pri: 8192
+    lacp_cleanup: 'lacp_cleanup.j2'

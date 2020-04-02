@@ -98,7 +98,8 @@ class TriggerLacp(Trigger):
                 log.info('On {BE} member {intf} priority is {pri}'.format(BE = bundle_if, intf = port, pri=port_id))
 
     @aetest.test
-    def cfg_lacp_mismatch(self, testbed, steps, BE_wrong_ID_uut2, mismatch_cfg, interfaces_uut2, templates_dir, BE_ID_uut):
+    def cfg_lacp_mismatch(self, testbed, steps, BE_wrong_ID_uut2, mismatch_cfg, interfaces_uut2, templates_dir, BE_ID_uut, sys_pri_cfg,
+                            new_sys_pri, new_intf_pri, interfaces_uut):
         with steps.start("Apply mismatch configuration on XR2") as step:
             try:
                 xr1 = testbed.devices['uut']
@@ -122,10 +123,90 @@ class TriggerLacp(Trigger):
         with steps.start("Verify Bundle Negotiation") as step:
 
             bundle_if = 'Bundle-Ether{id}'.format(id=BE_ID_uut)
-            interface_parsed = xr1.parse('show interfaces {intf}'.format(intf=bundle_if))
             bundle_parsed = xr1.parse('show bundle')
 
             for port in bundle_parsed['interfaces'][bundle_if]['port'].keys() :
                 link_state = bundle_parsed['interfaces'][bundle_if]['port'][port]['link_state']
                 if (link_state != 'Link is Active'):
                     log.info('On {BE} member {intf} state is {state}'.format(BE = bundle_if, intf = port, state=link_state))
+
+        with steps.start("Change System ID and port Priority") as step:
+
+            self.commit_label = 'pyats_{secret}'.format(secret=secrets.token_urlsafe(10))
+
+            success, message = apply_template(xr1, templates_dir, sys_pri_cfg,
+                                                      system_priority=new_sys_pri,
+                                                      interface_name_1=interfaces_uut[1],
+                                                      interface_priority=new_intf_pri,
+                                                      commit_label=self.commit_label)
+
+        with steps.start("Verify Bundle Negotiation after changes") as step:
+
+            bundle_if = 'Bundle-Ether{id}'.format(id=BE_ID_uut)
+            bundle_parsed = xr1.parse('show bundle')
+
+            for port in bundle_parsed['interfaces'][bundle_if]['port'].keys() :
+                link_state = bundle_parsed['interfaces'][bundle_if]['port'][port]['link_state']
+                if (link_state != 'Link is Active'):
+                    log.info('On {BE} member {intf} state is {state}'.format(BE = bundle_if, intf = port, state=link_state))
+
+        with steps.start("Fixing configuration on XR2") as step:
+            self.commit_label = 'pyats_{secret}'.format(secret=secrets.token_urlsafe(10))
+
+            success, message = apply_template(xr2, templates_dir, mismatch_cfg,
+                                                      bundle_id=BE_wrong_ID_uut2,
+                                                      interface_name_1=interfaces_uut2[0],
+                                                      commit_label=self.commit_label)
+
+        with steps.start("Final Verification for Bundle Negotiation") as step:
+
+            bundle_if = 'Bundle-Ether{id}'.format(id=BE_ID_uut)
+            bundle_parsed = xr1.parse('show bundle')
+
+            for port in bundle_parsed['interfaces'][bundle_if]['port'].keys() :
+                link_state = bundle_parsed['interfaces'][bundle_if]['port'][port]['link_state']
+                if (link_state == 'Link is Active'):
+                    log.info('On {BE} member {intf} state is {state}'.format(BE = bundle_if, intf = port, state=link_state))
+                else:
+                    break
+                    step.failed('On {BE} member {intf} state is {state}'.format(BE = bundle_if, intf = port, state=link_state))
+
+    @aetest.cleanup
+    def cfg_lacp_cleanup(self, testbed, steps, BE_ID_uut, BE_ID_uut2, BE_wrong_ID_uut2, interfaces_uut,
+                        interfaces_uut2, templates_dir, lacp_cleanup):
+
+        try:
+            xr1 = testbed.devices['uut']
+        except KeyError:
+            step.failed('Could not find XR device node "uut1" in the testbed')
+            self.failed(goto=['next_tc'])
+
+        try:
+            xr2 = testbed.devices['uut2']
+        except KeyError:
+            step.failed('Could not find XR device node "uut2" in the testbed')
+            self.failed(goto=['next_tc'])
+
+        with steps.start("Remove config on XR1") as step:
+            self.commit_label = 'pyats_{secret}'.format(secret=secrets.token_urlsafe(10))
+
+            success, message = apply_template(xr1, templates_dir, lacp_cleanup,
+                                                bundle_id=BE_ID_uut,
+                                                interface_name_1=interfaces_uut[0],
+                                                interface_name_2=interfaces_uut[1],
+                                                commit_label=self.commit_label)
+
+        with steps.start("Remove config on XR2") as step:
+            self.commit_label = 'pyats_{secret}'.format(secret=secrets.token_urlsafe(10))
+
+            success, message = apply_template(xr2, templates_dir, lacp_cleanup,
+                                                bundle_id=BE_ID_uut2,
+                                                interface_name_1=interfaces_uut2[0],
+                                                interface_name_2=interfaces_uut2[1],
+                                                commit_label=self.commit_label)
+
+            success, message = apply_template(xr2, templates_dir, lacp_cleanup,
+                                                bundle_id=BE_wrong_ID_uut2,
+                                                interface_name_1=interfaces_uut2[0],
+                                                interface_name_2=interfaces_uut2[1],
+                                                commit_label=self.commit_label)

@@ -1,0 +1,22 @@
+{# Documentation:
+    Required inputs:
+      bundle_id: Interface Bundle Ether ID
+      interface_name_1: Interface 1 to configure
+      interface_name_2: Interface 2 to configure
+      commit_label: Label used for this commit
+#}
+!
+interface {{ interface_name_1 }}
+ no bundle id
+ no bundle port-priority
+!
+interface {{ interface_name_2 }}
+ no bundle id
+ no bundle port-priority
+!
+no interface Bundle-Eth {{ bundle_id }}
+!
+no lacp system priority
+!
+commit label {{ commit_label }}
+!
