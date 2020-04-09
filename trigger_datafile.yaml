@@ -73,3 +73,27 @@ Testcase3_lacp_test:
     new_sys_pri: 4096
     new_intf_pri: 8192
     lacp_cleanup: 'lacp_cleanup.j2'
+
+Testcase4_isis_bcdl_test:
+    message:
+        |
+        BCDL prioritization for ISIS routes
+            1. Setup SPF prefix priority
+            2. Verify priority for test prefixes
+            3. Remove SPF prefix priority
+
+    devices:
+        - uut
+    groups:
+        - isis_bcdl
+        - trigger
+    source:
+        class: isis_bcdl.TriggerIsisBcdl
+    Test_Prefix1: 172.16.10.2/32
+    Test_Prefix2: 172.16.11.2/32
+    Test_Prefix3: 172.16.12.2/32
+    ACL_Name_High: ISIS-PREFIX-PRIORITY-HIGH
+    ACL_Name_Medium: ISIS-PREFIX-PRIORITY-MEDIUM
+    templates_dir: 'config_files'
+    isis_cfg: config_isis_bcdl.j2
+    isis_uncfg: unconfig_isis_bcdl.j2
