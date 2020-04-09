@@ -55,7 +55,7 @@ class TriggerIsisBcdl(Trigger):
     @aetest.test
     def test_routes(self, steps, uut, Test_Prefix1, Test_Prefix2, Test_Prefix3):
 
-        with steps.start("Testing High Priority Route") as step:
+        with steps.start("Testing High Priority Route",continue_=True) as step:
             out1 = uut.execute('show route {route} detail'.format(route=Test_Prefix1))
             out1_parsed = route_detail_parser(out1)
 
@@ -67,7 +67,7 @@ class TriggerIsisBcdl(Trigger):
                 step.failed("Prefix {prefix} has incorrect route priority {priority}".format(prefix=Test_Prefix1,
                                                                                 priority=route_priority))
 
-        with steps.start("Testing Medium Priority Route") as step:
+        with steps.start("Testing Medium Priority Route",continue_=True) as step:
             out2 = uut.execute('show route {route} detail'.format(route=Test_Prefix2))
             out2_parsed = route_detail_parser(out2)
 
@@ -79,7 +79,7 @@ class TriggerIsisBcdl(Trigger):
                 step.failed("Prefix {prefix} has incorrect route priority {priority}".format(prefix=Test_Prefix2,
                                                                                 priority=route_priority))
 
-        with steps.start("Testing Low Priority Route") as step:
+        with steps.start("Testing Low Priority Route",continue_=True) as step:
             out3 = uut.execute('show route {route} detail'.format(route=Test_Prefix3))
             out3_parsed = route_detail_parser(out3)
 
