@@ -1,0 +1,17 @@
+{# Documentation:
+    Required inputs:
+      process_id: Router ISIS process ID
+      ACL_Name_High: SPF prefix-priority High ACL
+      ACL_Name_Medium: SPF prefix-priority Medium ACL
+      commit_label: Label used for this commit
+#}
+!
+router isis {{ process_id }}
+ address-family ipv4 unicast
+  no spf prefix-priority high {{ ACL_Name_High }}
+  no spf prefix-priority medium {{ ACL_Name_Medium }}
+ !
+ no ipv4 access-list {{ ACL_Name_High }}
+ no ipv4 access-list {{ ACL_Name_Medium }}
+ !
+commit label {{ commit_label }}
