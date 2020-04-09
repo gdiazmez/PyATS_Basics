@@ -18,25 +18,6 @@ devices:
           ESCAPE_CHAR_PROMPT_WAIT: 2
         proxy: PyATS-VM
 
-  CR02-Cisco-NGCore: # Importante: Tiene que ser el Hostname!!!
-    type: iosxr
-    series: spitfire
-    os: iosxr
-    alias: uut2
-    platform: iosxr
-    credentials:
-      default:
-        username: admin
-        password: cisco123
-    connections:
-      cli:
-        protocol: ssh
-        ip: 172.16.18.11
-        settings:
-          ESCAPE_CHAR_CHATTY_TERM_WAIT: 2
-          ESCAPE_CHAR_PROMPT_WAIT: 2
-        proxy: PyATS-VM
-
   PyATS-VM:
     connections:
       linux:
