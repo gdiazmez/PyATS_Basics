@@ -10,5 +10,5 @@ def main():
 
     gRun(mapping_datafile='mapping_datafile.yaml',
          trigger_datafile='trigger_datafile.yaml',
-         trigger_groups=And('trigger','isis_bcdl'),
+         trigger_groups=And('trigger','sr_oper'),
          subsection_datafile='subsection_datafile.yaml')

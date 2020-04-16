@@ -3,8 +3,3 @@ devices:
     context: cli
     mapping:
       cli: cli
-
-  uut2:
-    context: cli
-    mapping:
-      cli: cli

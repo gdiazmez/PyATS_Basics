@@ -97,3 +97,22 @@ Testcase4_isis_bcdl_test:
     templates_dir: 'config_files'
     isis_cfg: config_isis_bcdl.j2
     isis_uncfg: unconfig_isis_bcdl.j2
+
+Testcase5_sr_oper_test:
+    message:
+        |
+        Segment-routing Configuration and operation
+            1. Verify if SR is enabled
+            2. Verify SR information advertised on ISIS
+            3. Verify local node-sid is advertised correctly in ISIS
+            3. Verify remote node-sid is advertised correctly in ISIS
+
+    devices:
+        - uut
+    groups:
+        - sr_oper
+        - trigger
+    source:
+        class: sr_oper.TriggerSrOper
+    Local_Prefix: 172.16.1.1/32
+    Remote_Prefix: 172.16.3.3/32
