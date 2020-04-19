@@ -131,3 +131,21 @@ def route_detail_parser(output):
             continue
 
     return out_dict
+
+def parse_hostname(output):
+
+    # Init vars
+    hostname = ''
+    p = re.compile(r'hostname (?P<hostname>[\S\s]*)')
+
+    for line in output.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+
+        m = p.match(line)
+        if m:
+            hostname = str(m.groupdict()['hostname'])
+            break
+
+    return hostname
