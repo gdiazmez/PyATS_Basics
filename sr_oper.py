@@ -6,7 +6,6 @@ import re
 from pyats import aetest
 from genie.harness.base import Trigger
 from utils import apply_template
-from parsers import parse_hostname
 import pprint
 
 
@@ -27,8 +26,7 @@ class TriggerSrOper(Trigger):
             if (vrf == 'default'):
                 break
 
-        out = uut.execute('show run | i hostname')
-        hostname = parse_hostname(out)
+        hostname = uut.api.get_running_config_hostname()
 
         with steps.start("Verify SRLB on ISIS Process",continue_=True) as step:
             if 'srlb' not in isis_parsed['instance'][process_id]['vrf']['default'].keys():
