@@ -9,4 +9,4 @@ Currently 4 local Tests
  2. LACP Test driven by lacp.py
  3. SCP Copy Test driven by scp.py
  4. ISIS BCDL Test briven by isis_bcdl.py
-
+ 5. Segment Routing validation driven by sr_oper.py
