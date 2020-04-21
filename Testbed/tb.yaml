@@ -6,9 +6,9 @@ devices:
   alias: 'XR9000v'
   credentials:
    default:
-    username: gdiaz
-    password: 'Gonzal0D'
+    username: foo_user
+    password: 'foo_pass'
   connections:
    cli:
     protocol: telnet
-    ip: "172.16.100.171"
+    ip: "1.2.3.4"
