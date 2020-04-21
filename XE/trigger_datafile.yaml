@@ -5,7 +5,7 @@ Testcase1_Power_Supply_verification:
         Environment variables collection
             1. Collect and parse show environment
     devices:
-        - uut
+        - xe
     groups:
         - pwr_supply
         - trigger
@@ -18,7 +18,7 @@ Testcase2_Fan_verification:
         Platform environment collection
             1. Collect environment for FAN
     devices:
-        - uut
+        - xe
     groups:
         - fan
         - trigger
@@ -31,7 +31,7 @@ Testcase3_Platform_verification:
         Platfotm variables collection
             1. Collect and parse show platform
     devices:
-        - uut
+        - xe
     groups:
         - platf
         - trigger

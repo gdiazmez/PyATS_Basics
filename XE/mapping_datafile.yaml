@@ -1,5 +1,5 @@
 devices:
-  uut:
+  xe:
     context: cli
     mapping:
       cli: cli
