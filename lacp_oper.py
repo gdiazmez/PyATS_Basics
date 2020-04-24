@@ -1,4 +1,4 @@
-"""Implementation LACP Oper triggers"""
+"""Implementation LACP Oper triggers on XR"""
 import logging
 import secrets
 from collections import deque
