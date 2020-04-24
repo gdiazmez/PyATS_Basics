@@ -1,0 +1,11 @@
+{# Documentation:
+    Required inputs:
+      interface_name_1: Interface 1 to configure
+      commit_label: Label used for this commit
+#}
+!
+interface {{ interface_name_1 }}
+ no lacp period short
+!
+commit label {{ commit_label }}
+!

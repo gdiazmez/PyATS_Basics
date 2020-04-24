@@ -1,118 +1,154 @@
 
 Testcase1_environment_variables:
-    message:
-        |
-        Environmental variables collection
-            1. Collect show environment output
-            2. Collect show environment all output
-            3. Collect show environment power output
-            4. Collect show environment fan output
-            5. Collect show environment temperature output
-    devices:
-        - uut
-    groups:
-        - env
-        - trigger
-    source:
-        class: env.TriggerEnv
+  message:
+      |
+      Environmental variables collection
+          1. Collect show environment output
+          2. Collect show environment all output
+          3. Collect show environment power output
+          4. Collect show environment fan output
+          5. Collect show environment temperature output
+  devices:
+      - uut
+  groups:
+      - env
+      - trigger
+  source:
+    class: env.TriggerEnv
 
 Testcase2_scp_capability:
-    message:
-        |
-        SCP Validation
-            1. Copy SCP from Test Server to Device
-            2. Copy SCP from Device to Test Server
-    devices:
-        - uut
-    groups:
-        - scp
-        - trigger
-    source:
-        class: scp.TriggerScp
-    remote_file: 'test/test.txt'
-    local_file: 'disk0:/test.txt'
-    scp_server: '172.16.11.32'
-    scp_username: 'gdiazmez'
-    scp_password: 'cisco123'
-    vrf: 'management'
+  message:
+      |
+      SCP Validation
+          1. Copy SCP from Test Server to Device
+          2. Copy SCP from Device to Test Server
+  devices:
+      - uut
+  groups:
+      - scp
+      - trigger
+  source:
+    class: scp.TriggerScp
+  remote_file: 'test/test.txt'
+  local_file: 'disk0:/test.txt'
+  scp_server: '172.16.11.32'
+  scp_username: 'gdiazmez'
+  scp_password: 'cisco123'
+  vrf: 'management'
 
 Testcase3_lacp_test:
-    message:
-        |
-        LACP Negotiation
-            1. Remove system-id configuration
-            2. Remove port-priority setup
-            3. Determine primary link
-            4. Misconfigure Bundle ID on peers and recommend fix
-            5. Verify LACP Negotiation
-            6. Change system-id and port-priority
-            7. Verify LACP Negotiation
-            8. Remove Bundle ID misconfiguration
+  message:
+      |
+      LACP Negotiation
+          1. Remove system-id configuration
+          2. Remove port-priority setup
+          3. Determine primary link
+          4. Misconfigure Bundle ID on peers and recommend fix
+          5. Verify LACP Negotiation
+          6. Change system-id and port-priority
+          7. Verify LACP Negotiation
+          8. Remove Bundle ID misconfiguration
 
-    devices:
-        - uut
-    groups:
-        - lacp
-        - trigger
-    source:
-        class: lacp.TriggerLacp
-    BE_ID_uut: 1
-    interfaces_uut:
+  devices:
+      - uut
+  groups:
+      - lacp
+      - trigger
+  source:
+    class: lacp.TriggerLacp
+  BE_ID_uut: 1
+  interfaces_uut:
       - Te0/0/0/2
       - Te0/0/0/3
-    BE_ID_uut2: 1
-    BE_wrong_ID_uut2: 10
-    interfaces_uut2:
+  BE_ID_uut2: 1
+  BE_wrong_ID_uut2: 10
+  interfaces_uut2:
       - Te0/2/0/4
       - Te0/2/0/5
-    templates_dir: 'config_files'
-    template_config: 'lacp_initial.j2'
-    remove_sysid: 'unconfig_lacp_sysid.j2'
-    mismatch_cfg: 'lacp_mismatch.j2'
-    sys_pri_cfg: 'lacp_sys_pri.j2'
-    new_sys_pri: 4096
-    new_intf_pri: 8192
-    lacp_cleanup: 'lacp_cleanup.j2'
+  templates_dir: 'config_files'
+  template_config: 'lacp_initial.j2'
+  remove_sysid: 'unconfig_lacp_sysid.j2'
+  mismatch_cfg: 'lacp_mismatch.j2'
+  sys_pri_cfg: 'lacp_sys_pri.j2'
+  new_sys_pri: 4096
+  new_intf_pri: 8192
+  lacp_cleanup: 'lacp_cleanup.j2'
 
 Testcase4_isis_bcdl_test:
-    message:
-        |
-        BCDL prioritization for ISIS routes
-            1. Setup SPF prefix priority
-            2. Verify priority for test prefixes
-            3. Remove SPF prefix priority
+  message:
+      |
+      BCDL prioritization for ISIS routes
+          1. Setup SPF prefix priority
+          2. Verify priority for test prefixes
+          3. Remove SPF prefix priority
 
-    devices:
-        - uut
-    groups:
-        - isis_bcdl
-        - trigger
-    source:
-        class: isis_bcdl.TriggerIsisBcdl
-    Test_Prefix1: 172.16.3.3/32
-    Test_Prefix2: 172.16.2.2/32
-    Test_Prefix3: 172.16.5.5/32
-    ACL_Name_High: ISIS-PREFIX-PRIORITY-HIGH
-    ACL_Name_Medium: ISIS-PREFIX-PRIORITY-MEDIUM
-    templates_dir: 'config_files'
-    isis_cfg: config_isis_bcdl.j2
-    isis_uncfg: unconfig_isis_bcdl.j2
+  devices:
+      - uut
+  groups:
+      - isis_bcdl
+      - trigger
+  source:
+    class: isis_bcdl.TriggerIsisBcdl
+  Test_Prefix1: 172.16.3.3/32
+  Test_Prefix2: 172.16.2.2/32
+  Test_Prefix3: 172.16.5.5/32
+  ACL_Name_High: ISIS-PREFIX-PRIORITY-HIGH
+  ACL_Name_Medium: ISIS-PREFIX-PRIORITY-MEDIUM
+  templates_dir: 'config_files'
+  isis_cfg: config_isis_bcdl.j2
+  isis_uncfg: unconfig_isis_bcdl.j2
 
 Testcase5_sr_oper_test:
-    message:
-        |
-        Segment-routing Configuration and operation
-            1. Verify if SR is enabled
-            2. Verify SR information advertised on ISIS
-            3. Verify local node-sid is advertised correctly in ISIS
-            3. Verify remote node-sid is advertised correctly in ISIS
+  message:
+      |
+      Segment-routing Configuration and operation
+          1. Verify if SR is enabled
+          2. Verify SR information advertised on ISIS
+          3. Verify local node-sid is advertised correctly in ISIS
+          4. Verify remote node-sid is advertised correctly in ISIS
 
-    devices:
-        - uut
-    groups:
-        - sr_oper
-        - trigger
-    source:
-        class: sr_oper.TriggerSrOper
-    Local_Prefix: 172.16.1.1/32
-    Remote_Prefix: 172.16.3.3/32
+  devices:
+      - uut
+  groups:
+      - sr_oper
+      - trigger
+  source:
+    class: sr_oper.TriggerSrOper
+  Local_Prefix: 172.16.1.1/32
+  Remote_Prefix: 172.16.3.3/32
+
+Testcase6_lacp_oper_test:
+  message:
+      |
+      LACP Configuration and operation
+          1. Determine which device has priority on UUT and Peer
+          2. Determine the primary link of bundle on priority device
+          3. Configure LACP system-priority on UUT
+          4. Configure LACP port-priority and period short
+          5. Verify LACP state
+          6. Change LACP system MAC on UUT
+          7. Remove LACP port-priority on UUT
+          8. Remove LACP period short on UUT
+          10. Recover configuration to original state
+
+  devices:
+      - uut
+  groups:
+      - lacp_oper
+      - trigger
+  source:
+    class: lacp_oper.TriggerLacpOper
+  bundle_id_uut: 1
+  bundle_id_peer: 1
+  if_test_1: GigabitEthernet0/0/0/0
+  if_test_2: GigabitEthernet0/0/0/2
+  if_priority: 2000
+  if_best_priority: 1000
+  lacp_sys_pri: 3000
+  lacp_sys_mac: beef.beef.beef
+  templates_dir: 'config_files'
+  config_sys: 'lacp_sys.j2'
+  config_pri_fast: 'lacp_pri_fast.j2'
+  config_pri: 'lacp_pri.j2'
+  config_mac: 'lacp_mac.j2'
+  config_no_fast: 'lacp_no_fast.j2'

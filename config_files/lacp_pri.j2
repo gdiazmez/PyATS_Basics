@@ -1,0 +1,12 @@
+{# Documentation:
+    Required inputs:
+      interface_name_1: Interface 1 to configure
+      interface_priority: LACP Port Priority
+      commit_label: Label used for this commit
+#}
+!
+interface {{ interface_name_1 }}
+ bundle port-priority {{ interface_priority }}
+!
+commit label {{ commit_label }}
+!

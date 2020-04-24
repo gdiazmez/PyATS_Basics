@@ -1,0 +1,10 @@
+{# Documentation:
+    Required inputs:
+      system_mac = New System LACP MAC
+      commit_label: Label used for this commit
+#}
+!
+lacp system mac {{ system_mac }}
+!
+commit label {{ commit_label }}
+!

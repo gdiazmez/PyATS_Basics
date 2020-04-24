@@ -3,3 +3,8 @@ devices:
     context: cli
     mapping:
       cli: cli
+
+  xr:
+    context: cli
+    mapping:
+      cli: cli
