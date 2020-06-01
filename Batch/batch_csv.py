@@ -5,7 +5,9 @@ import sys
 import csv
 
 testbed = Testbed('exampleTestbed')
-user = input("Enter your username and password: ")
+ip_jump_server = input ("Enter your jumpserver IP Address: ")
+Port = input ("Enter your jumpserver TCP Port: ")
+user = input("Enter your username and password for network devices: ")
 password = getpass.getpass()
 testbed.credentials['default'] = dict(username=user, password=password)
 
@@ -13,8 +15,8 @@ jump_server = Device('jump_host',
                   connections = {
                       'mgmt': {
                           'protocol': 'ssh',
-                          'ip': '190.151.29.125',
-                          'port': '8022'
+                          'ip': ip_jump_server,
+                          'port': Port
                       },
                   })
 jump_server.os = 'linux'
