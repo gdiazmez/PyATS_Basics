@@ -1,0 +1,11 @@
+{# Documentation:
+    Required inputs:
+      interface_id: Interface ID
+      commit_label: Label used for this commit
+#}
+!
+interface {{ interface_id }}
+ shutdown
+!
+commit label {{ commit_label }}
+!

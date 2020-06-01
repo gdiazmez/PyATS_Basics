@@ -149,3 +149,105 @@ def parse_hostname(output):
             break
 
     return hostname
+
+def cpu_parser(output):
+
+    # Init vars
+    out_dict = {}
+
+    # CPU utilization for one minute: 4%; five minutes: 4%; fifteen minutes: 3%
+    p = re.compile(r'^CPU utilization for one minute: (?P<cpu_one>\S+)%;'
+                    r' five minutes: (?P<cpu_five>\S+)%;'
+                    r' fifteen minutes: (?P<cpu_fifteen>\S+)%')
+
+    for line in output.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+
+        # CPU utilization for one minute: 4%; five minutes: 4%; fifteen minutes: 3%
+        m = p.match(line)
+        if m:
+            cpu_one = str(m.groupdict()['cpu_one'])
+            cpu_five = str(m.groupdict()['cpu_five'])
+            cpu_fifteen = str(m.groupdict()['cpu_fifteen'])
+            out_dict['cpu_one'] = cpu_one
+            out_dict['cpu_five'] = cpu_five
+            out_dict['cpu_fifteen'] = cpu_fifteen
+
+    return out_dict
+
+def memory_parser(output):
+
+    # Init vars
+    out_dict = {}
+
+    #     Physical Memory     : 31522.984 MB
+    p1 = re.compile(r'^Physical Memory\s+: (?P<phy_mem>\S+)\s+MB')
+
+    #     Free Memory         : 21575.656 MB
+    p2 = re.compile(r'^Free Memory\s+: (?P<free_mem>\S+)\s+MB')
+
+    for line in output.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+
+        #     Physical Memory     : 31522.984 MB
+        m = p1.match(line)
+        if m:
+            phy_mem = str(m.groupdict()['phy_mem'])
+            out_dict['phy_mem'] = phy_mem
+            continue
+
+        #     Free Memory         : 21575.656 MB
+        m = p2.match(line)
+        if m:
+            free_mem = str(m.groupdict()['free_mem'])
+            out_dict['free_mem'] = free_mem
+
+    return out_dict
+
+def exception_parser(output):
+
+    # Init vars
+    out_dict = {}
+
+    #     Choice  1 path = disk0:/dumps/ compress = Always on
+    p = re.compile(r'^Choice\s+1\s+path\s+=\s+(?P<path>\S+)\s+')
+
+    for line in output.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+
+        #     Choice  1 path = disk0:/dumps/ compress = Always on
+        m = p.match(line)
+        if m:
+            path = str(m.groupdict()['path'])
+            out_dict['path'] = path
+            continue
+
+    return out_dict
+
+def files_parser(output):
+
+    # Init vars
+    out_list = []
+
+    #    16354 drwxr-xr-x 2  4096 Apr 21 15:03 nvgen_traces
+    p = re.compile(r'^\S+\s+-r\S+\s+\S+\s+\S+\s+\S+\s+\S+\s+\S+:\S+\s+(?P<file>\S+)')
+
+    for line in output.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+
+        #     Choice  1 path = disk0:/dumps/ compress = Always on
+        m = p.match(line)
+        if m:
+            file = str(m.groupdict()['file'])
+            out_list.append(file)
+            continue
+
+    return out_list

@@ -152,3 +152,35 @@ Testcase6_lacp_oper_test:
   config_pri: 'lacp_pri.j2'
   config_mac: 'lacp_mac.j2'
   config_no_fast: 'lacp_no_fast.j2'
+
+Testcase7_cli_reload_test:
+  message:
+      |
+      Command Line Triggered Reload
+          1. Verify Redundancy Operation
+          2. Collect Initial State for Router
+            2.1 Collect Line Card state
+            2.2 Collect Interface State
+            2.3 Collect ISIS adjacency table
+            2.4 Collect memory and CPU utilization
+          3. Reload  UUT Router
+          4. Collect Final State for Router
+            4.1 Verify ISIS adjacency table
+            4.2 Verify Interface State
+            4.3 Verify Line Card state
+            4.4 Verify memory and CPU utilization
+          5. Validate time to bring up ISIS adjacency
+          6. Check for crash/traceback
+
+  devices:
+      - uut
+  groups:
+      - cli_reload
+      - trigger
+  source:
+    class: cli_reload.TriggerCliReload
+  templates_dir: 'config_files'
+  template_config: 'bundle_shut.j2'
+  helper_interface: 'Bundle-Ether1'
+  reload_max_time: 1800
+  check_interval: 5
