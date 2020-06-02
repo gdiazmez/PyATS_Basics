@@ -11,3 +11,12 @@ Currently 6 local Tests
  4. ISIS BCDL Test briven by isis_bcdl.py
  5. Segment Routing validation driven by sr_oper.py
  6. LACP Operational tests driven by lacp_oper.py
+
+
+PyATS Automated Collection on "Batch" Folder
+
+This PyATS job file triggers a definition on-the-fly of a new testbed from CSV devices using two jump-servers and environment variables.
+
+Usage:
+
+pyats run job job.by
