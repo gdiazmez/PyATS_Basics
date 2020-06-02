@@ -64,7 +64,7 @@ class Testcase(aetest.Testcase):
             log.info('Entering Jump host with IP {} and user "{}"'.format(ip_js2,user2))
 
         with steps.start('Populating testbed from CSV File') as step:
-            File = os.environ.get('PRIVATE_PATH') + 'vtr_devices.csv'
+            File = os.environ.get('PRIVATE_PATH') + 'devices.csv'
             try:
                 with open(File, 'r') as f:
                     reader = csv.reader(f)
@@ -94,6 +94,7 @@ class Testcase(aetest.Testcase):
         with steps.start('Connecting devices except jumpservers') as step:
             Success = True
             Failed = []
+            Collected = []
             for device in self.tb.devices.keys():
                 if (self.tb.devices[device].os == 'linux'):
                     continue
@@ -111,9 +112,11 @@ class Testcase(aetest.Testcase):
                         reader2 = csv.reader(g)
                         for row2 in reader2:
                             uut.execute((row2)[0])
+                        Collected.append(uut.name)
             if Success:
-                step.passed('All devices were collected')
+                step.passed('All devices were collected: {}'.format(Collected))
             else:
+                log.info('These devices were collected: {}'.format(Collected))
                 step.failed('These devices could not be collected: {}'.format(Failed))
 
 if __name__ == '__main__': # pragma: no cover
