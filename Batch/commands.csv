@@ -1,0 +1,5 @@
+terminal length 0
+terminal width 0
+show install active summary
+show clock
+show ipv4 interface brief

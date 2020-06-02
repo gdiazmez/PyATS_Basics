@@ -37,8 +37,19 @@ with open('devices.csv', 'r') as f:
         dev.testbed = testbed
         del dev
 
-
 tb = load(testbed)
-uut = tb.devices['xr9kv2']
 
-uut.connect()
+for device in tb.devices.keys():
+    if (tb.devices[device].os == 'linux'):
+        continue
+    else:
+        uut = tb.devices[device]
+        try:
+            uut.connect(init_exec_commands=[], init_config_commands=[],connection_timeout=5)
+        except Exception:
+            print('fallo al conectar a {}'.format(uut.name))
+            continue
+        with open('commands.csv', 'r') as g:
+            reader2 = csv.reader(g)
+            for row2 in reader2:
+                uut.execute((row2)[0])
