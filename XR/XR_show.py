@@ -1,16 +1,19 @@
 import pprint
 from genie.testbed import load
-tb = load('../Testbed/XR_test.yaml')
+tb = load('~/pyats/Testbed/2k.yaml')
 
-dev = tb.devices['ASR9906']
+
+dev = tb.devices['xr9kv2']
 dev.connect()
 
-output = dev.parse('show ospf vrf all-inclusive neighbor detail')
+output = dev.parse('show isis neighbors')
 
-print ('\n *** OSPF ipv4 neighbor structure *** \n')
+print ('\n *** ISIS ipv4 neighbor structure *** \n')
 
-for x in output['vrf'].keys():
+for x in output['isis']['Core']['vrf'].keys():
 	print ('\n *** For VRF', x , '*** \n')
-	pprint.pprint(output['vrf'][x]['address_family']['ipv4']['instance'])
+	for intf in output['isis']['Core']['vrf'][x]['interfaces'].keys():
+		print ('neighbors for interface: {}'.format(intf))
+		pprint.pprint(output['isis']['Core']['vrf'][x]['interfaces'][intf])
 
 dev.disconnect()
