@@ -1,8 +1,8 @@
 import jinja2
 from genie.testbed import load
-tb = load('../Testbed/XR_test.yaml')
+tb = load('~/pyats/Testbed/2k.yaml')
 
-dev = tb.devices['ASR9906']
+dev = tb.devices['xr9kv2']
 dev.connect()
 
 env = jinja2.Environment(loader=jinja2.FileSystemLoader(searchpath='../config_files'))
