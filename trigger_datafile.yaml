@@ -87,6 +87,7 @@ Testcase4_isis_bcdl_test:
   groups:
       - isis_bcdl
       - trigger
+      - demo
   source:
     class: isis_bcdl.TriggerIsisBcdl
   Test_Prefix1: 172.16.3.3/32
@@ -136,6 +137,7 @@ Testcase6_lacp_oper_test:
   groups:
       - lacp_oper
       - trigger
+      - demo
   source:
     class: lacp_oper.TriggerLacpOper
   bundle_id_uut: 1
