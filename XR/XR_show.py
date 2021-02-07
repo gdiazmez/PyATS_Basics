@@ -1,9 +1,9 @@
 import pprint
 from genie.testbed import load
-tb = load('~/pyats/Testbed/2k.yaml')
+tb = load('/Users/gdiazmez/pyats/Testbed/2K.yaml')
 
 
-dev = tb.devices['xr9kv2']
+dev = tb.devices['xr9kv1']
 dev.connect()
 
 output = dev.parse('show isis neighbors')
