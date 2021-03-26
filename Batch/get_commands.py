@@ -13,6 +13,7 @@ class Testcase(aetest.Testcase):
     def create_testbed(self, steps):
         testbed = Testbed('PyATS Testbed')
         ip_js1 = self.parameters['ip_js1']
+        port1 = self.parameters['port1']
         user1 = self.parameters['user1']
         pass1 = self.parameters['pass1']
         ip_js2 = self.parameters['ip_js2']
@@ -31,7 +32,7 @@ class Testcase(aetest.Testcase):
                                         'mgmt': {
                                             'protocol': 'ssh',
                                             'ip': ip_js1,
-                                            'port': '22'
+                                            'port': port1
                                         },
                                     },
                                 )
