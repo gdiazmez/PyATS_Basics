@@ -4,6 +4,9 @@ Usage:
 
 pyats run job job_test.py -t 'Testbed Location'
 
+Connections managed via: mapping_datafile.yaml
+Testcases driven by: trigger_datafile.yaml
+
 Currently 6 local Tests
  1. Environment Test driven by env.py
  2. LACP Test driven by lacp.py
