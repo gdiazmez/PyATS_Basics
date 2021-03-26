@@ -1,10 +1,15 @@
 devices:
-  uut:
+  R1:
     context: cli
     mapping:
       cli: cli
 
-  xr2:
+  R2:
+    context: cli
+    mapping:
+      cli: cli
+
+  R5:
     context: cli
     mapping:
       cli: cli
