@@ -16,34 +16,36 @@ class TriggerLacp(Trigger):
     @aetest.setup
     def cfg_lacp_setup(self, testbed, steps, message, BE_ID_uut,
                         interfaces_uut, BE_ID_uut2, interfaces_uut2,
-                        templates_dir, template_config, remove_sysid):
+                        templates_dir, template_config, remove_sysid,
+                        hardcode_mac):
         log.info("Test case steps:\n{msg}".format(msg=message))
 
         try:
-            xr1 = testbed.devices['uut']
+            xr1 = testbed.devices['R1']
         except KeyError:
-            step.failed('Could not find XR device node "uut1" in the testbed')
+            step.failed('Could not find XR device node "R1" in the testbed')
             self.failed(goto=['next_tc'])
 
         try:
-            xr2 = testbed.devices['uut2']
+            xr2 = testbed.devices['R2']
         except KeyError:
-            step.failed('Could not find XR device node "uut2" in the testbed')
+            step.failed('Could not find XR device node "R2" in the testbed')
             self.failed(goto=['next_tc'])
 
         with steps.start("Remove LACP Sys-ID on XR1") as step:
-            self.commit_label = 'pyats_{secret}'.format(secret=secrets.token_urlsafe(10))
+            self.xr1_initial_commit_label = 'pyats_{secret}'.format(secret=secrets.token_urlsafe(10))
 
             success, message = apply_template(xr1, templates_dir, remove_sysid,
-                                                commit_label=self.commit_label)
+                                                commit_label=self.xr1_initial_commit_label)
 
             lacp_sysid_1 = xr1.parse('show lacp system-id')
 
-        with steps.start("Remove LACP Sys-ID on XR2") as step:
-            self.commit_label = 'pyats_{secret}'.format(secret=secrets.token_urlsafe(10))
+        with steps.start("Hardcode LACP Sys-ID on XR2") as step:
+            self.xr2_initial_commit_label = 'pyats_{secret}'.format(secret=secrets.token_urlsafe(10))
 
-            success, message = apply_template(xr2, templates_dir, remove_sysid,
-                                                commit_label=self.commit_label)
+            success, message = apply_template(xr2, templates_dir, hardcode_mac,
+                                                system_mac = 'beef.beef.ffff',
+                                                commit_label=self.xr2_initial_commit_label)
 
             lacp_sysid_2 = xr2.parse('show lacp system-id')
 
@@ -102,15 +104,15 @@ class TriggerLacp(Trigger):
                             new_sys_pri, new_intf_pri, interfaces_uut):
         with steps.start("Apply mismatch configuration on XR2") as step:
             try:
-                xr1 = testbed.devices['uut']
+                xr1 = testbed.devices['R1']
             except KeyError:
-                step.failed('Could not find XR device node "uut1" in the testbed')
+                step.failed('Could not find XR device node "R1" in the testbed')
                 self.failed(goto=['next_tc'])
 
             try:
-                xr2 = testbed.devices['uut2']
+                xr2 = testbed.devices['R2']
             except KeyError:
-                step.failed('Could not find XR device node "uut2" in the testbed')
+                step.failed('Could not find XR device node "R2" in the testbed')
                 self.failed(goto=['next_tc'])
 
             self.commit_label = 'pyats_{secret}'.format(secret=secrets.token_urlsafe(10))
@@ -176,37 +178,19 @@ class TriggerLacp(Trigger):
                         interfaces_uut2, templates_dir, lacp_cleanup):
 
         try:
-            xr1 = testbed.devices['uut']
+            xr1 = testbed.devices['R1']
         except KeyError:
-            step.failed('Could not find XR device node "uut1" in the testbed')
+            step.failed('Could not find XR device node "R1" in the testbed')
             self.failed(goto=['next_tc'])
 
         try:
-            xr2 = testbed.devices['uut2']
+            xr2 = testbed.devices['R2']
         except KeyError:
-            step.failed('Could not find XR device node "uut2" in the testbed')
+            step.failed('Could not find XR device node "R2" in the testbed')
             self.failed(goto=['next_tc'])
 
         with steps.start("Remove config on XR1") as step:
-            self.commit_label = 'pyats_{secret}'.format(secret=secrets.token_urlsafe(10))
-
-            success, message = apply_template(xr1, templates_dir, lacp_cleanup,
-                                                bundle_id=BE_ID_uut,
-                                                interface_name_1=interfaces_uut[0],
-                                                interface_name_2=interfaces_uut[1],
-                                                commit_label=self.commit_label)
+            xr1.execute('rollback config to {}'.format(self.xr1_initial_commit_label))
 
         with steps.start("Remove config on XR2") as step:
-            self.commit_label = 'pyats_{secret}'.format(secret=secrets.token_urlsafe(10))
-
-            success, message = apply_template(xr2, templates_dir, lacp_cleanup,
-                                                bundle_id=BE_ID_uut2,
-                                                interface_name_1=interfaces_uut2[0],
-                                                interface_name_2=interfaces_uut2[1],
-                                                commit_label=self.commit_label)
-
-            success, message = apply_template(xr2, templates_dir, lacp_cleanup,
-                                                bundle_id=BE_wrong_ID_uut2,
-                                                interface_name_1=interfaces_uut2[0],
-                                                interface_name_2=interfaces_uut2[1],
-                                                commit_label=self.commit_label)
+            xr2.execute('rollback config to {}'.format(self.xr2_initial_commit_label))

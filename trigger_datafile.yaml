@@ -23,18 +23,18 @@ Testcase2_scp_capability:
           1. Copy SCP from Test Server to Device
           2. Copy SCP from Device to Test Server
   devices:
-      - uut
+      - R5
   groups:
       - scp
       - trigger
   source:
-    class: scp.TriggerScp
-  remote_file: 'test/test.txt'
+    class: scp_tc.TriggerScp
+  remote_file: 'test.txt'
   local_file: 'disk0:/test.txt'
-  scp_server: '172.16.11.32'
-  scp_username: 'gdiazmez'
-  scp_password: 'cisco123'
-  vrf: 'management'
+  scp_server: '192.168.122.10'
+  scp_username: 'cisco'
+  scp_password: 'devbox2020'
+  vrf: 'MGMT'
 
 Testcase3_lacp_test:
   message:
@@ -50,24 +50,25 @@ Testcase3_lacp_test:
           8. Remove Bundle ID misconfiguration
 
   devices:
-      - uut
+      - R1
   groups:
-      - lacp
+      - lacp_test
       - trigger
   source:
     class: lacp.TriggerLacp
-  BE_ID_uut: 1
+  BE_ID_uut: 200
   interfaces_uut:
-      - Te0/0/0/2
-      - Te0/0/0/3
-  BE_ID_uut2: 1
+      - Gi0/0/0/0
+      - Gi0/0/0/5
+  BE_ID_uut2: 200
   BE_wrong_ID_uut2: 10
   interfaces_uut2:
-      - Te0/2/0/4
-      - Te0/2/0/5
+      - Gi0/0/0/0
+      - Gi0/0/0/5
   templates_dir: 'config_files'
   template_config: 'lacp_initial.j2'
   remove_sysid: 'unconfig_lacp_sysid.j2'
+  hardcode_mac: 'lacp_sysid.j2'
   mismatch_cfg: 'lacp_mismatch.j2'
   sys_pri_cfg: 'lacp_sys_pri.j2'
   new_sys_pri: 4096

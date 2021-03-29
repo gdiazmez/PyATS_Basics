@@ -24,9 +24,9 @@ class TriggerLacpOper(Trigger):
 
         with steps.start("Determine master LACP device") as step:
             try:
-                peer = testbed.devices['xr2']
+                peer = testbed.devices['R2']
             except KeyError:
-                step.failed('Could not find device "xr2" in the testbed')
+                step.failed('Could not find device "R2" in the testbed')
 
             lacp_uut = uut.parse('show lacp system-id')
             lacp_peer = peer.parse('show lacp system-id')
