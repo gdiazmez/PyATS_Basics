@@ -84,16 +84,16 @@ Testcase4_isis_bcdl_test:
           3. Remove SPF prefix priority
 
   devices:
-      - uut
+      - R1
   groups:
       - isis_bcdl
       - trigger
       - demo
   source:
     class: isis_bcdl.TriggerIsisBcdl
-  Test_Prefix1: 172.16.3.3/32
-  Test_Prefix2: 172.16.2.2/32
-  Test_Prefix3: 172.16.5.5/32
+  Test_Prefix1: 3.3.3.3/32
+  Test_Prefix2: 2.2.2.2/32
+  Test_Prefix3: 5.5.5.5/32
   ACL_Name_High: ISIS-PREFIX-PRIORITY-HIGH
   ACL_Name_Medium: ISIS-PREFIX-PRIORITY-MEDIUM
   templates_dir: 'config_files'
@@ -110,14 +110,14 @@ Testcase5_sr_oper_test:
           4. Verify remote node-sid is advertised correctly in ISIS
 
   devices:
-      - uut
+      - R1
   groups:
       - sr_oper
       - trigger
   source:
     class: sr_oper.TriggerSrOper
-  Local_Prefix: 172.16.1.1/32
-  Remote_Prefix: 172.16.3.3/32
+  Local_Prefix: 1.1.1.1/32
+  Remote_Prefix: 3.3.3.3/32
 
 Testcase6_lacp_oper_test:
   message:
@@ -134,17 +134,17 @@ Testcase6_lacp_oper_test:
           10. Recover configuration to original state
 
   devices:
-      - uut
+      - R1
   groups:
       - lacp_oper
       - trigger
       - demo
   source:
     class: lacp_oper.TriggerLacpOper
-  bundle_id_uut: 1
-  bundle_id_peer: 1
+  bundle_id_uut: 200
+  bundle_id_peer: 200
   if_test_1: GigabitEthernet0/0/0/0
-  if_test_2: GigabitEthernet0/0/0/2
+  if_test_2: GigabitEthernet0/0/0/5
   if_priority: 2000
   if_best_priority: 1000
   lacp_sys_pri: 3000
@@ -176,7 +176,7 @@ Testcase7_cli_reload_test:
           6. Check for crash/traceback
 
   devices:
-      - uut
+      - R1
   groups:
       - cli_reload
       - trigger
@@ -184,6 +184,6 @@ Testcase7_cli_reload_test:
     class: cli_reload.TriggerCliReload
   templates_dir: 'config_files'
   template_config: 'bundle_shut.j2'
-  helper_interface: 'Bundle-Ether1'
+  helper_interface: 'Bundle-Ether200.200'
   reload_max_time: 1800
   check_interval: 5

@@ -20,9 +20,9 @@ class TriggerIsisBcdl(Trigger):
         log.info("Test case steps:\n{msg}".format(msg=message))
 
         try:
-            xr1 = testbed.devices['uut']
+            xr1 = testbed.devices['R1']
         except KeyError:
-            step.failed('Could not find XR device node "uut" in the testbed')
+            step.failed('Could not find XR device node "R1" in the testbed')
             self.failed(goto=['next_tc'])
 
         with steps.start("Discovering ISIS process ID") as step:
@@ -97,9 +97,9 @@ class TriggerIsisBcdl(Trigger):
         log.info("Test case steps:\n{msg}".format(msg=message))
 
         try:
-            xr1 = testbed.devices['uut']
+            xr1 = testbed.devices['R1']
         except KeyError:
-            step.failed('Could not find XR device node "uut" in the testbed')
+            step.failed('Could not find XR device node "R1" in the testbed')
             self.failed(goto=['next_tc'])
 
         with steps.start("Discovering ISIS process ID") as step:

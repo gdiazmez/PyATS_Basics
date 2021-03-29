@@ -13,6 +13,7 @@ from parsers import exception_parser
 from parsers import files_parser
 import math
 import pprint
+import time
 
 log = logging.getLogger(__name__)
 
@@ -24,6 +25,7 @@ class TriggerCliReload(Trigger):
                     helper_interface, reload_max_time, check_interval):
         log.info("Test case steps:\n{msg}".format(msg=message))
 
+        '''
         with steps.start("Verify Redundancy Operation", continue_=True) as step:
 
             cmd = 'show redundancy summary'
@@ -43,6 +45,8 @@ class TriggerCliReload(Trigger):
                     break
                 else:
                     step.failed('RSPs are not operating with full redundancy')
+
+        '''
 
         with steps.start("Collect Initial State for Router") as step:
 
@@ -71,7 +75,7 @@ class TriggerCliReload(Trigger):
                     child.failed("Failed to parse '{}':\n{}".format(cmd, e))
 
             with step.start('Collect CPU State', continue_=True) as child:
-                cmd = 'sh processes cpu | e 0%'
+                cmd = 'sh processes cpu'
                 try:
                     out = uut.execute(cmd)
                 except Exception as e:
@@ -130,7 +134,7 @@ class TriggerCliReload(Trigger):
 #            self.uut_reloaded = True
 #            uut.disconnect()
 
-        with steps.start("Shutdown BE1") as step:
+        with steps.start("Shutdown BE200") as step:
             self.commit_label = 'pyats_{secret}'.format(secret=secrets.token_urlsafe(10))
 
             success, message = apply_template(uut, templates_dir, template_config,
@@ -139,14 +143,16 @@ class TriggerCliReload(Trigger):
 
             if success:
                 self.uut_reloaded = True
+                log.info('Sleeping for 40 secs for ISIS neighbor failure')
+                time.sleep(40)
             else:
                 step.failed('Apply template failed with:\n{}'.format(message))
 
         with steps.start("Verify UUT as ISIS neighbor up in peer") as step:
             try:
-                peer = testbed.devices['xr2']
+                peer = testbed.devices['R2']
             except KeyError:
-                step.failed('Could not find device "xr2" in the testbed')
+                step.failed('Could not find device "R2" in the testbed')
 
             timeout_up = Timeout(reload_max_time, check_interval)
             reload_time = check_interval
@@ -240,7 +246,7 @@ class TriggerCliReload(Trigger):
                     continue
 
             with step.start('Verify CPU State', continue_=True) as child:
-                cmd = 'sh processes cpu | e 0%'
+                cmd = 'sh processes cpu'
                 try:
                     out = uut.execute(cmd)
                 except Exception as e:
